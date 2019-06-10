@@ -17,6 +17,23 @@ server.get('/', async(req, res) => {
     }
 })
 
+server.get('/:id', async(req, res) => {
+    try {
+        const budget = await db.findById(req.params.id)
+        if(budget) {
+            res.status(200).json(budget)
+        } else {
+            res.status(404).json({
+                message: "Budget with the specified ID does not exist"
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Error retrieving budget with specified ID"
+        })
+    }
+})
+
 server.post('/', async (req, res) => {
     try {
         const newBudget = await db.add(req.body)
@@ -24,6 +41,42 @@ server.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({
             message: 'Error adding new budget'
+        })
+    }
+})
+
+server.delete('/:id', async(req, res) => {
+    try {
+        const budget = await db.remove(req.params.id)
+        if(budget) {
+            res.status(204).json({
+                message: 'Budget has been deleted'
+            })
+        } else {
+            res.status(404).json({
+                message: 'Budget with the specified ID does not exist'
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error deleting budget'
+        })
+    }
+})
+
+server.put('/:id', async(req, res) => {
+    try {
+        const budget = await db.update(req.params.id, req.body)
+        if(budget) {
+            res.status(200).json(budget)
+        } else {
+            res.status(400),json({
+                message: 'Please provide name and budget'
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error updating budget'
         })
     }
 })
