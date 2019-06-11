@@ -71,7 +71,8 @@ server.put('/:id', async(req, res) => {
             res.status(200).json(budget)
         } else {
             res.status(400),json({
-                message: 'Please provide name and budget'
+                message: 'Please provide name and budget',
+                budget
             })
         }
     } catch (error) {
